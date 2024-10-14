@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MorphDash</title>
+    <link rel="stylesheet" href="./css/mdb.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    <link rel="icon" href="./img/logo.png">
+    <link rel="stylesheet" href="./css/morphDash.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+</head>
+
+<body class="dark-edition">
+    <div class="wrapper ">
+        <div class="sidebar" data-color="purple" data-background-color="black" data-image="poly.jpg">
+            <div class="logo">
+                <center>
+                    <img src="./img/logo.png" style="width: 70px">
+                </center>
+            </div>
+            <!-- statusbar  -->
+            <div id="sbar" class="p-1 mx-3 my-2" title="Device is Offline"></div>
+            <!-- status bar -->
+
+            <div id="online" class="online  mx-3" title="Device is Online">
+                <div class="load-barx">
+                    <div class="barx"></div>
+                    <div class="barx"></div>
+                    <div class="barx"></div>
+                    <div class="barx"></div>
+                </div>
+            </div>
+
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li class="nav-item active" onclick="nav('dashboard',this)">
+                        <a class="nav-link">
+                            <i class="fa fa-th"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item" onclick="nav('datalogs',this)">
+                        <a class="nav-link">
+                            <i class="fa fa-list"></i>
+                            <p>Data Logs</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item" onclick="nav('about',this)">
+                        <a class="nav-link">
+                            <i class="fa fa-bars"></i>
+                            <p>About Project</p>
+                        </a>
+                    </li>
+
+
+
+
+                </ul>
+                <a href="tel:+84987654321">
+                    <button class="btn-hover color-7 fixed-bottom">
+          <a href="tel:+84987654321"> Hotline: 0915615801
+    </button>
+                </a>
+            </div>
+        </div>
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
+                <div class="container-fluid">
+                    <div class="navbar-wrapper">
+                        <a class="navbar-brand" id="cpage">Dashboard</a>
+                    </div>
+                </div>
+            </nav>
+            <!-- End Navbar -->
+            <div class="content">
+                <div class="container-fluid" id="dashboard">
+                    <div class="row">
+                        <!-- Humidity -->
+                        <div class="col-xl-4 col-lg-12">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-info">
+                                    <span class="text-heading">DHT 22 Humidity Reading</span>
+                                </div>
+                                <div class="card-body">
+                                    <center>
+                                        <h1 class="value my-3"><span id="hum">0</span> %</h1>
+                                    </center>
+                                    <h4 class="card-title">Humidity</h4>
+                                    <p class="card-category">
+                                        Amount of atmospheric moisture
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="text-muted"><i class="fa fa-circle text-info"></i> Updates Every 2s</span>
+                                </div>
+                                <div class="card">
+                                    <h3>Distance (m)</h3>
+                                    <canvas id="distanceChart"></canvas>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Temperature -->
+                        <div class="col-xl-4 col-lg-12">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-danger">
+                                    <span class="text-heading">DHT 22 Temperature Reading</span>
+                                </div>
+                                <div class="card-body">
+                                    <center>
+                                        <h1 class="value my-3"><span id="temp">0</span> <span style="text-transform: lowercase;">℃</span></h1>
+                                    </center>
+                                    <h4 class="card-title">Temperature</h4>
+                                    <p class="card-category">
+                                        Amount of Heat
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="text-muted"><i class="fa fa-circle text-danger"></i> Updates Every 2s</span>
+                                </div>
+
+                                <div class="card">
+                                    <h3>Temperature (°C)</h3>
+                                    <canvas id="temperatureChart"></canvas>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                        <!-- Ultrasonic Sensor -->
+                        <div class="col-xl-4 col-lg-12">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-warning">
+                                    <span class="text-heading">Ultrasonic Sensor Reading</span>
+                                </div>
+                                <div class="card-body">
+                                    <center>
+                                        <h1 class="value my-3"><span id="us">0</span> cm</h1>
+                                    </center>
+                                    <h4 class="card-title">Distance</h4>
+                                    <p class="card-category">
+                                        Distance Measurement using sound
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="text-muted"><i class="fa fa-circle text-warning"></i> Updates Every 2s</span>
+                                </div>
+                                <div class="card">
+                                    <h3>Voltage (V)</h3>
+                                    <canvas id="voltageChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+
+
+                        <!-- end of sensor widgets -->
+                    </div>
+                </div>
+
+                <div id="datalogs" style="display: none">
+                    <div class="content container-fluid">
+                        <p class="text-info"><i class="fa fa-circle"></i> The Following tables are the summary of data logged for each sensor.</p>
+                        <hr>
+                        <!-- table for database -->
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Humidity & And Temperature Sensor</h4>
+                                <p class="card-category"> DHT22 Sensor</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <th>Log No.</th>
+                                            <th>Humidity</th>
+                                            <th>Temperature</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="th">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Ultrasonic Range</h4>
+                                <p class="card-category"> Ultrasonic Sensor</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <th>Log No.</th>
+                                            <th> Distance</th>
+                                            <th> Date </th>
+                                            <th> Time</th>
+
+                                        </thead>
+                                        <tbody id="dt">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>3.15 cm</td>
+                                                <td>44/55/66</td>
+                                                <td>3:30 PM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title">Gas</h4>
+                                <p class="card-category">Gas Sensor</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <th>Log No.</th>
+                                            <th>Gas State</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="gs">
+                                            <tr>
+                                                <td>1</td>
+                                                <td class="text-danger">WARNING</td>
+                                                <td>3/13/19</td>
+                                                <td>6:30 AM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Sound Sensor</h4>
+                                <p class="card-category"> Sound Sensor Reading</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <th>Log No.</th>
+                                            <th>Sensor Reading</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="ss">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>44.3</td>
+                                                <td>3/20/19</td>
+                                                <td>9:45 PM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Touch Sensor</h4>
+                                <p class="card-category"> Capacitive Touch Sensor</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <th>Log No.</th>
+                                            <th> Sensor Reading</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="ts">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>22.3</td>
+                                                <td>8/22/20</td>
+                                                <td>1:17 PM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Flame</h4>
+                                <p class="card-category"> Flame Sensor</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="text-primary">
+                                            <th>Log No.</th>
+                                            <th> Sensor Reading</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="fsx">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>50%</td>
+                                                <td>4/15/19</td>
+                                                <td>5:25 AM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Rain Drop</h4>
+                                <p class="card-category"> Rain Drop Sensor</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <th>Log No.</th>
+                                            <th> Sensor Reading</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="rs">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>50%</td>
+                                                <td>10/10/19</td>
+                                                <td>2:36 PM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Magnetic Sensor</h4>
+                                <p class="card-category"> Hall Effect Magnetic Sensor</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <th>Log No.</th>
+                                            <th> Sensor Reading</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="ms">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>50%</td>
+                                                <td>12/34/56</td>
+                                                <td>8:23 AM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">Light</h4>
+                                <p class="card-category"> Light Sensor</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class=" text-primary">
+                                            <th>Log No.</th>
+                                            <th> Sensor Reading</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                        </thead>
+                                        <tbody id="lsx">
+                                            <tr>
+                                                <td>1</td>
+                                                <td>50%</td>
+                                                <td>3/22/19</td>
+                                                <td>10:20 AM</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                    <!-- table for db -->
+                </div>
+
+                <div id="about" style="display: none">
+                    <div class="content container-fluid">
+                        <h4 class="text-info">About the Project</h4>
+                        <p class="text-muted">
+                            <strong>MorphDash</strong> is a Realtime dashboard for displaying sensor data for a Python based Rasberry Pi 3 Model B+ Sensor Interfacer, this dashboard is currently interfaced with 9 sensors in total. Which are as follows:</p>
+                        <ol class="text-info">
+                            <li>Temperature and Humidity Sensor</li>
+                            <li>Ultrasonic Sensor</li>
+                            <li>Capacitve Touch Sesor</li>
+                            <li>Flame Sensor</li>
+                            <li>Hall Effect Magnetic Sensor</li>
+                            <li>Sound Sensor</li>
+                            <li>Raindrop Sensor</li>
+                            <li>Gas Sensor</li>
+                            <li>Light Sensor</li>
+                        </ol>
+                        <hr>
+                    </div>
+                </div>
+
+
+
+                <!-- <script src="./js/mdb.js"></script> -->
+                <script src="./js/smoothie.js"></script>
+                <script src="./js/axios.js"></script>
+                <script src="./js/socket.io.js"></script>
+                <script src="./js/morphDash.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    const temperatureCtx = document.getElementById('temperatureChart').getContext('2d');
+                    const voltageCtx = document.getElementById('voltageChart').getContext('2d');
+                    const distanceCtx = document.getElementById('distanceChart').getContext('2d');
+
+                    // Initial data arrays
+                    const time = [];
+                    const temperatures = [];
+                    const voltages = [];
+                    const distances = [];
+
+                    // Create charts
+                    const temperatureChart = new Chart(temperatureCtx, {
+                        type: 'line',
+                        data: {
+                            labels: time,
+                            datasets: [{
+                                label: 'Temperature (°C)',
+                                data: temperatures,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                fill: true,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Time (s)'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Temperature (°C)'
+                                    },
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    const voltageChart = new Chart(voltageCtx, {
+                        type: 'line',
+                        data: {
+                            labels: time,
+                            datasets: [{
+                                label: 'Voltage (V)',
+                                data: voltages,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                fill: true,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Time (s)'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Voltage (V)'
+                                    },
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    const distanceChart = new Chart(distanceCtx, {
+                        type: 'line',
+                        data: {
+                            labels: time,
+                            datasets: [{
+                                label: 'Distance (m)',
+                                data: distances,
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                fill: true,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Time (s)'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Distance (m)'
+                                    },
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                    // Connect to WebSocket
+                    const ws = new WebSocket('ws://localhost:8080');
+
+                    ws.onmessage = function(event) {
+                        const data = JSON.parse(event.data);
+
+                        // Update time and data arrays
+                        const currentTime = time.length ? time[time.length - 1] + 2 : 0; // Increment time
+                        time.push(currentTime);
+                        temperatures.push(data.temperature);
+                        voltages.push(data.voltage);
+                        distances.push(data.distance);
+
+                        // Update charts
+                        // temp.update(data.temperature);
+                        temperatureChart.update();
+                        voltageChart.update();
+                        distanceChart.update();
+                    };
+                </script>
+
+</body>
+
+</html>
